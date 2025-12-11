@@ -21,7 +21,7 @@ To ensure a stable and reproducible environment for running the MD PCA & cluster
 ### Create environment with a stable Python version and required scientific libraries
 
 ```bash
-conda create -y -n mdpca python=3.10 numpy scipy scikit-learn pandas matplotlib mdtraj h5py pip
+conda create -y -n mdpca python=3.10 numpy scipy scikit-learn pandas matplotlib mdtraj h5py pip -c conda-forge
 ```
 ### Activate the environment
 
