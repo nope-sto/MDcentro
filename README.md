@@ -14,6 +14,21 @@ It performs PCA dimensionality reduction, generates high-quality time-colored PC
 - Calculates RMSD to assess clustering quality  
 - Produces a summary Excel sheet for all systems  
 
+## Conda Environment Setup
+
+To ensure a stable and reproducible environment for running the MD PCA & clustering pipeline, create and activate the recommended Conda environment:
+
+### Create environment with a stable Python version and required scientific libraries
+
+```bash
+conda create -y -n mdpca python=3.10 numpy scipy scikit-learn pandas matplotlib mdtraj h5py pip
+```
+### Activate the environment
+
+```bash
+conda activate mdpca
+```
+
 ## Usage
 
 ```bash
