@@ -49,4 +49,11 @@ python3 process_md.py   --base-folder /path/to/MD_screening/   --ref-pdb /path/t
 - `clustering_summary.xlsx` with inertia, RMSD, and k=1 acceptance results  
 - Additional text README explaining RMSD acceptance criteria  
 
+## Example
+
+MD trajectories (20 replicates) and the expected output files are provided for the enzyme Kemp HG3.R5. The variant has been described in our Nature Chemical Biology Paper (https://www.nature.com/articles/s41589-024-01712-3) and the MD simulations were conducted based on the high-throughput protocol described by Wang et al 2023 (https://pubs.acs.org/doi/full/10.1021/acs.jcim.3c00002).
+
+
+
+
 ---
