@@ -1,59 +1,89 @@
-# MDcentro - MD Trajectory Clustering & PCA Pipeline
+# MDcentro -- MD Trajectory Clustering & PCA Pipeline
 
-This repository provides a Python workflow for analyzing **short molecular dynamics (MD) simulations**.  
-It performs PCA dimensionality reduction, generates high-quality time-colored PCA plots, clusters conformations using MiniBatchKMeans, and extracts representative centroid structures.
+MDcentro provides a streamlined workflow for analyzing **short molecular
+dynamics (MD) simulations**.\
+It performs PCA dimensionality reduction, time‑colored PCA
+visualization, clustering using MiniBatchKMeans, and extraction of
+representative centroid structures.
 
 ## Features
 
-- Processes short MD trajectories from `MD*` subdirectories  
-- Removes water and aligns each frame to a reference backbone  
-- Computes PCA (2D for visualization, 20D for clustering)  
-- Generates clean, borderless PCA scatter plots  
-- Performs fast k-means clustering (k=1 and k=2)  
-- Saves the k=1 centroid structure as a PDB file  
-- Calculates RMSD to assess clustering quality  
-- Produces a summary Excel sheet for all systems  
+-   Automatically discovers and processes `MD*` subdirectories\
+-   Removes water and aligns trajectories to a reference backbone\
+-   Computes PCA:
+    -   **2D PCA** for visualization\
+    -   **20D PCA** for clustering\
+-   Produces high‑resolution PCA plots with KDE density overlays\
+-   Performs fast MiniBatchKMeans clustering (`k=1` and `k=2`)\
+-   Extracts the **k=1 centroid frame** and saves it as a PDB\
+-   Calculates RMSD to evaluate centroid representativeness\
+-   Generates:
+    -   Per‑system PCA plots\
+    -   Per‑system centroid PDBs\
+    -   A global `clustering_summary.xlsx` report\
+    -   A text README explaining RMSD acceptance rules
 
 ## Conda Environment Setup
 
-To ensure a stable and reproducible environment for running the MD PCA & clustering pipeline, create and activate the recommended Conda environment:
+### Create the environment
 
-### Create environment with a stable Python version and required scientific libraries
-
-```bash
-conda create -y -n mdpca python=3.10 numpy scipy scikit-learn pandas matplotlib mdtraj h5py pip -c conda-forge
+``` bash
+conda env create -f mdcentro.yml
 ```
-### Activate the environment
 
-```bash
-conda activate mdpca
+### Activate the environment
+
+``` bash
+conda activate mdcentro
 ```
 
 ## Usage
 
-```bash
-python3 process_md.py   --base-folder /path/to/MD_screening/   --ref-pdb /path/to/reference.pdb   --out-folder /path/to/output   --max-rmsd 2.0
+``` bash
+python3 MDcentro.py     --base-folder /path/to/MD_screening/     --ref-pdb /path/to/reference.pdb     --out-folder /path/to/output     --max-rmsd 2.0
 ```
 
 ## Input Arguments
 
-- **`--base-folder`** — Directory containing `MD*` folders with `.h5` trajectories  
-- **`--ref-pdb`** — Reference structure used for backbone alignment  
-- **`--out-folder`** — Output directory for plots, centroid structures, and summary files  
-- **`--max-rmsd`** — RMSD threshold (Å) for accepting k=1 clustering  
+  -----------------------------------------------------------------------
+  Argument                      Description
+  ----------------------------- -----------------------------------------
+  `--base-folder`               Folder containing `MD*` subdirectories
+                                with `.h5` trajectories
+
+  `--ref-pdb`                   Reference PDB used for backbone alignment
+
+  `--out-folder`                Directory where plots, PDBs, and summary
+                                files are written
+
+  `--max-rmsd`                  RMSD threshold (Å) determining whether
+                                k=1 clustering is acceptable
+
+  `--samples-per-system`        Number of frames to sample for global PCA
+                                (default: 5000)
+  -----------------------------------------------------------------------
 
 ## Output Files
 
-- High-resolution PCA plots  
-- Representative centroid PDB structures  
-- `clustering_summary.xlsx` with inertia, RMSD, and k=1 acceptance results  
-- Additional text README explaining RMSD acceptance criteria  
+-   **PCA Plots:**
+    -   Combined scatter + KDE density maps\
+    -   Scaled-up font sizes for improved readability\
+-   **Centroid PDB files** for each system\
+-   **clustering_summary.xlsx** containing:
+    -   Max RMSD to centroid\
+    -   k=1 acceptability\
+-   **clustering_summary_readme.txt** documenting clustering rules
 
-## Example
+## Example Data
 
-MD trajectories (20 replicates) and the expected output files are provided for the enzyme Kemp HG3.R5. The variant has been described in our Nature Chemical Biology Paper (https://www.nature.com/articles/s41589-024-01712-3) and the MD simulations were conducted based on the high-throughput protocol described by Wang et al 2023 (https://pubs.acs.org/doi/full/10.1021/acs.jcim.3c00002).
+Example MD trajectories and output files are available for the Shuffle library (N=199) between enzyme
+**Kemp HG3.R5** and **Kemp HG3.17**, adescribed in:
 
-
-
-
----
+-   **Nature Chemical Biology (2024)** --
+    https://www.nature.com/articles/s41589-024-01712-3\
+-   MD workflow based on **Wang et al., 2023** --
+    https://pubs.acs.org/doi/full/10.1021/acs.jcim.3c00002
+    
+``` bash
+python ./MDcentro.py --base-folder MD_trajectories --ref-pdb HG3_H2O.pdb --out-folder output_centroids
+```
